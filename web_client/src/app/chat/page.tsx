@@ -4,6 +4,4 @@ export default function chat() {
       Hello, world
     </div>
   )
-
-
 }
