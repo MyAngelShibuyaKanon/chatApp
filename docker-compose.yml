@@ -1,0 +1,33 @@
+version: '1'
+services:
+  backend:
+    build: 
+      context: ./server/
+      dockerfile: Dockerfile
+    container_name: chat-app-backend
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/chatapp
+      - JWT_SECRET=your_jwt_secret_here
+      - NODE_ENV=development
+      - PORT=8727
+    ports:
+      - "8727:8727"
+    depends_on:
+      - db
+    volumes:
+      - ./server:/app
+
+  db:
+    image: postgres:13-alpine
+    container_name: chat-app-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: chatapp
+    ports:
+      - "5532:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:

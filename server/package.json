@@ -13,5 +13,10 @@
   },
   "scripts": {
     "dev": "nodemon src/server.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.9.0",
+    "pg": "^8.16.0",
+    "prisma": "^6.9.0"
   }
 }
