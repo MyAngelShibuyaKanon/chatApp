@@ -1,4 +1,9 @@
-import { boolean, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { boolean, pgEnum, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+
+export const userRoleEnum = pgEnum("user_role", [
+  "user",
+  "admin",
+]);
 
 export const users = pgTable("users", {
   id: uuid("id")
@@ -17,7 +22,7 @@ export const users = pgTable("users", {
   isActive: boolean("is_active")
     .notNull()
     .default(true),
-
+  role: userRoleEnum("role").notNull().default("user"),
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
     .defaultNow(),

@@ -7,7 +7,7 @@ const app = createApp();
 
 configOpenAPI(app);
 
-const routes = [index, auth];
+const routes = [index];
 
 routes.forEach((route) => {
   app.route("/", route);
