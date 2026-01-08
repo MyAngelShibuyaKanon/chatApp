@@ -1,14 +1,8 @@
 import { serve } from "@hono/node-server";
-
 import app from "@/app";
-
-serve(
-  {
+serve({
     fetch: app.fetch,
     port: 6727,
-  },
-  (info) => {
-    // eslint-disable-next-line no-console
+}, (info) => {
     console.log(`Server is running on http://localhost:${info.port}`);
-  },
-);
+});

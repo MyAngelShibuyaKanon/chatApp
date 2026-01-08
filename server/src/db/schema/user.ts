@@ -1,4 +1,3 @@
-
 import { boolean, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
@@ -27,4 +26,3 @@ export const users = pgTable("users", {
     .notNull()
     .defaultNow(),
 });
-

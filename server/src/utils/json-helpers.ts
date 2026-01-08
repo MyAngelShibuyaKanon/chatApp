@@ -1,10 +1,8 @@
-import { ZodSchema } from "./types";
+import type { ZodSchema } from "./types";
 
-export const jsonContent = <
+export function jsonContent<
   T extends ZodSchema,
->(schema: T,
-  description: string,
-) => {
+>(schema: T, description: string) {
   return {
     content: {
       "application/json": {
@@ -13,17 +11,13 @@ export const jsonContent = <
     },
     description,
   };
-};
+}
 
-export const jsonContentRequired = <
+export function jsonContentRequired<
   T extends ZodSchema,
->(schema: T,
-  description: string,
-) => {
+>(schema: T, description: string) {
   return {
     ...jsonContent(schema, description),
     required: true,
   };
-};
-
-
+}
