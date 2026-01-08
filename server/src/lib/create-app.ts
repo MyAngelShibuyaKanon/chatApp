@@ -1,6 +1,9 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
-import { pinoLogger } from "hono-pino";
 import { requestId } from "hono/request-id";
+
+import notFound from "@/middlewares/not-found";
+import onError from "@/middlewares/on-error";
+import { pinoLogger } from "@/middlewares/pino-logger";
 
 import { defaultHook } from "./types";
 
@@ -15,5 +18,8 @@ export function createApp() {
   const app = createRouter();
   app.use(requestId());
   app.use(pinoLogger());
+
+  app.onError(onError);
+  app.notFound(notFound);
   return app;
 }

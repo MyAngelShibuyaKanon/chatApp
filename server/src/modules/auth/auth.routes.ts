@@ -3,7 +3,9 @@ import { createRoute, z } from "@hono/zod-openapi";
 import { OK } from "@/utils/http-status-codes";
 import { jsonContent } from "@/utils/json-helpers";
 
-import { userSelectSchema } from "./auth.schema";
+import {
+  selectUserArraySchema,
+} from "./auth.schema";
 
 const tags = ["Auth"];
 
@@ -13,7 +15,7 @@ export const list = createRoute({
   tags,
   responses: {
     [OK]: jsonContent(
-      z.array(userSelectSchema),
+      selectUserArraySchema,
       "List of users",
     ),
   },
