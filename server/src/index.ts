@@ -1,11 +1,13 @@
 import { serve } from "@hono/node-server";
 
-import app from "@/app";
+import env from "@/env";
+
+import app from "./app";
 
 serve(
   {
     fetch: app.fetch,
-    port: 6727,
+    port: env.PORT,
   },
   (info) => {
     // eslint-disable-next-line no-console
