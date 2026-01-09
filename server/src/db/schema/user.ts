@@ -9,15 +9,10 @@ export const users = pgTable("users", {
   id: uuid("id")
     .defaultRandom()
     .primaryKey(),
-
-  email: text("email")
-    .notNull()
-    .unique(),
-
-  passwordHash: text("password_hash")
+  password: text("password")
     .notNull(),
 
-  name: text("name"),
+  name: text("name").unique().notNull(),
 
   isActive: boolean("is_active")
     .notNull()
