@@ -3,7 +3,7 @@ import { createRoute, z } from "@hono/zod-openapi";
 import createErrorSchema from "@/utils/create-error-schema";
 import createMessageObjectSchema from "@/utils/create-message-object-schema";
 import { jsonContent, jsonContentRequired } from "@/utils/json-helpers";
-import { HttpStatusCode } from "@/utils/types";
+import { HttpStatusCode, HttpStatusPhrase } from "@/utils/types";
 
 import {
   insertUserSchema,
@@ -27,7 +27,7 @@ export const list = createRoute({
 },
 );
 export const get = createRoute({
-  path: "/user",
+  path: "/user/{name}",
   method: "get",
   request: {
     params: z.object({
@@ -49,7 +49,7 @@ export const get = createRoute({
       "Get user",
     ),
     [HttpStatusCode.NOT_FOUND]: jsonContent(
-      createMessageObjectSchema("User not found"),
+      createMessageObjectSchema(HttpStatusPhrase.NOT_FOUND),
       "User not found",
     ),
   },
@@ -77,6 +77,33 @@ export const create = createRoute({
   },
 });
 
+export const signIn = createRoute({
+  path: "/signIn",
+  method: "post",
+  request: {
+    body: jsonContentRequired(
+      insertUserSchema,
+      "Sign in",
+    ),
+  },
+  tags,
+  responses: {
+    [HttpStatusCode.OK]: jsonContent(
+      selectUserSchema,
+      "Returns User Acess and Refresh Token ",
+    ),
+    [HttpStatusCode.NOT_FOUND]: jsonContent(
+      createMessageObjectSchema(HttpStatusPhrase.NOT_FOUND),
+      "User not found",
+    ),
+    [HttpStatusCode.UNAUTHORIZED]: jsonContent(
+      createMessageObjectSchema(HttpStatusPhrase.UNAUTHORIZED),
+      "Password incorrect",
+    ),
+  },
+});
+
+export type SignInRoute = typeof signIn;
 export type ListRoute = typeof list;
 export type GetRoute = typeof get;
 export type CreateRoute = typeof create;
