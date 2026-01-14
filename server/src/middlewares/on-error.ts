@@ -8,7 +8,7 @@ const onError: ErrorHandler = (err, c) => {
   const currentStatus = "status" in err
     ? err.status
     : c.res?.status;
-  const statusCode = currentStatus !== OK
+  const statusCode = currentStatus && currentStatus !== OK // check if currentStatus is not empty
     ? (currentStatus as ContentfulStatusCode)
     : INTERNAL_SERVER_ERROR;
 
