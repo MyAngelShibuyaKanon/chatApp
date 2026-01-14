@@ -7,7 +7,7 @@ import { INTERNAL_SERVER_ERROR, OK } from "@/utils/http-status-codes";
 const onError: ErrorHandler = (err, c) => {
   const currentStatus = "status" in err
     ? err.status
-    : c.newResponse(null).status;
+    : c.res?.status;
   const statusCode = currentStatus !== OK
     ? (currentStatus as ContentfulStatusCode)
     : INTERNAL_SERVER_ERROR;

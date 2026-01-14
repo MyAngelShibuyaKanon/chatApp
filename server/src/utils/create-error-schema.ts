@@ -1,16 +1,19 @@
 import { z } from "@hono/zod-openapi";
 
-import type { ZodSchema } from "./types";
+export function createErrorSchema<T extends z.ZodType>(schema: T) {
+  const invalidValue
+    = schema instanceof z.ZodArray
+      ? [null]
+      : schema instanceof z.ZodObject
+        ? {}
+        : null;
 
-export function createErrorSchema<T extends ZodSchema>(schema: T) {
-  const { error } = schema.safeParse(
-    schema.def.type === "array" ? [schema.element._def.type === "string" ? 123 : "invalid"] : {},
-  );
+  const result = schema.safeParse(invalidValue);
 
-  const example = error
+  const example = !result.success
     ? {
-        name: error.name,
-        issues: error.issues.map((issue: z.ZodIssue) => ({
+        name: result.error.name,
+        issues: result.error.issues.map((issue: z.core.$ZodIssue) => ({
           code: issue.code,
           path: issue.path,
           message: issue.message,

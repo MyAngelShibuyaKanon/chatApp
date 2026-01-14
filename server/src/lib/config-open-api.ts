@@ -2,13 +2,11 @@ import { Scalar } from "@scalar/hono-api-reference";
 
 import type { AppOpenAPI } from "./types";
 
-import packageJSON from "../../package.json" with { type: "json" };
-
 export default function configOpenAPI(app: AppOpenAPI) {
   app.doc("/doc", {
     openapi: "3.0.0",
     info: {
-      version: packageJSON.version,
+      version: "0.0.1",
       title: "ChatApp API",
     },
   });
@@ -21,7 +19,7 @@ export default function configOpenAPI(app: AppOpenAPI) {
       layout: "classic",
       defaultHttpClient: {
         targetKey: "dart",
-        clientKey: "fetch",
+        clientKey: "dio",
       },
     }),
   );

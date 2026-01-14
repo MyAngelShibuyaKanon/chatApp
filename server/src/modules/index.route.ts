@@ -1,6 +1,7 @@
 import { createRoute, z } from "@hono/zod-openapi";
 
 import { createRouter } from "@/lib/create-app.js";
+import { HttpStatusCode } from "@/utils/constants";
 import { jsonContent } from "@/utils/json-helpers";
 
 const router = createRouter().openapi(
@@ -9,7 +10,7 @@ const router = createRouter().openapi(
     method: "get",
     path: "/",
     responses: {
-      200:
+      [HttpStatusCode.OK]:
         jsonContent(z.object({
           message: z.string(),
         }).openapi({

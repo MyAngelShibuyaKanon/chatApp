@@ -2,10 +2,8 @@ import type { z } from "@hono/zod-openapi";
 import type { Context } from "hono";
 import type { ContentfulStatusCode } from "hono/utils/http-status";
 
-import type { ZodSchema } from "./types";
-
 export function jsonContent<
-  T extends ZodSchema,
+  T extends z.ZodType,
 >(schema: T, description: string) {
   return {
     content: {
@@ -18,7 +16,7 @@ export function jsonContent<
 }
 
 export function jsonContentRequired<
-  T extends ZodSchema,
+  T extends z.ZodType,
 >(schema: T, description: string) {
   return {
     ...jsonContent(schema, description),
@@ -28,7 +26,7 @@ export function jsonContentRequired<
 
 export function strictJSONResponse<
   C extends Context,
-  S extends ZodSchema,
+  S extends z.ZodType,
   D extends Parameters<Context["json"]>[0] & z.infer<S>,
   U extends ContentfulStatusCode,
 >(c: C, schema: S, data: D, statusCode?: U) {
