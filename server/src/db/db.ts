@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { drizzle } from "drizzle-orm/node-postgres";
 
-import * as schema from "@/db/schema/user";
+import * as schema from "@/db/schema/auth";
 import env from "@/env";
 
 export const db = drizzle(env.DATABASE_URL!, { schema });
