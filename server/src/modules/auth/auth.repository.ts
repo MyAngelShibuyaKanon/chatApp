@@ -34,7 +34,11 @@ export class AuthRepository {
     return await this.db.update(sessions).set({ lastVerifiedAt }).where(eq(sessions.id, sessionId)).returning();
   }
 
-  async getUser(username: string) {
+  async getUserFromId(userId: string) {
+    return await this.db.select().from(users).where(eq(users.id, userId)).limit(1);
+  }
+
+  async getUserFromUsername(username: string) {
     return await this.db.select().from(users).where(eq(users.username, username)).limit(1);
   }
 

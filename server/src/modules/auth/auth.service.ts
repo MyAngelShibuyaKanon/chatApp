@@ -54,9 +54,14 @@ export class AuthService {
     return result;
   }
 
-  async getUser(username: string) {
+  async getUserFromId(userId: string) {
     const authRepo = this.authRepoFactory(db);
-    return authRepo.getUser(username);
+    return await authRepo.getUserFromId(userId);
+  }
+
+  async getUserFromUsername(username: string) {
+    const authRepo = this.authRepoFactory(db);
+    return await authRepo.getUserFromUsername(username);
   }
 
   async createSession(userId: string): Promise<SessionWithToken | null> {
@@ -144,6 +149,7 @@ export class AuthService {
       }
       session.lastVerifiedAt = result[0].lastVerifiedAt;
     }
+
     return session;
   }
 

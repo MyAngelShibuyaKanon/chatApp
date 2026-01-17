@@ -1,3 +1,9 @@
+import type { z } from "@hono/zod-openapi";
+
+import { users } from "@/db/schema/auth";
+
+import type { sessionSelectSchema, userSelectSchema } from "./auth.schema";
+
 export interface SessionWithToken extends Session {
   token: string;
 }
@@ -9,3 +15,6 @@ export interface Session {
   createdAt: Date;
   lastVerifiedAt: Date;
 }
+
+export type User = z.infer<typeof userSelectSchema>;
+export type session = z.infer<typeof sessionSelectSchema>;

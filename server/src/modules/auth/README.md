@@ -13,7 +13,6 @@
 - /auth/register - Adds a new user to the database
 - /auth/login - verify user details and send session token
 - /auth/logout - invalidates session token
-- /auth/refresh - returns new session token
 
 ### Get
 

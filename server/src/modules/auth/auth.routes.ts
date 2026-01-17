@@ -1,8 +1,9 @@
 import { createRoute } from "@hono/zod-openapi";
 
 import { requireAuth } from "@/middlewares/auth";
-import { HttpStatusCode } from "@/utils/constants";
+import { HttpStatusCode, HttpStatusPhrase } from "@/utils/constants";
 import createErrorSchema from "@/utils/create-error-schema";
+import createMessageObjectSchema from "@/utils/create-message-object-schema";
 import { jsonContent, jsonContentRequired, jsonContentWithHeader } from "@/utils/json-helpers";
 
 import { authResponseHeaders, sessionSelectSchema, userRegisterSchema, userSelectSchema } from "./auth.schema";
@@ -22,14 +23,19 @@ export const register = createRoute({
   },
 });
 
-export const getSession = createRoute({
-  path: "/session",
+export const getMe = createRoute({
+  path: "/me",
   method: "get",
   tags,
   middleware: requireAuth,
   responses: {
-    [HttpStatusCode.OK]: jsonContent(sessionSelectSchema, "Get user session data"),
+    [HttpStatusCode.OK]: jsonContent(userSelectSchema, "Get user data"),
+    [HttpStatusCode.UNAUTHORIZED]: jsonContent(
+      createMessageObjectSchema(HttpStatusPhrase.UNAUTHORIZED),
+      "User unauthorized",
+    ),
   },
 });
 
-export type registerRoute = typeof register;
+export type RegisterRoute = typeof register;
+export type GetMeRoute = typeof getMe;

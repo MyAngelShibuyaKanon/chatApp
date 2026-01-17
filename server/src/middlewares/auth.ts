@@ -32,20 +32,18 @@ export async function requireAuth(c: Context, next: Next) {
   }
 
   // 3. Validate session
-  const session = await validateSession(sessionToken);
-
+  const result = await validateSession(sessionToken);
   // 4. Invalid or expired session
-  if (!session) {
-    return c.json({ error: "Invalid or expired session" }, 401);
+  if (!result) {
+    return c.json({ message: "Invalid or expired session" }, 401);
   }
 
   // 5. Refresh cookie if session was extended (sliding sessions)
   // This happens automatically in validateSessionToken when session is close to expiring
   setSessionTokenCookie(c, sessionToken);
-
   // 6. Set user and session in context for handlers
-  c.set("session", session);
-  c.set("sessionId", session.id);
-
+  c.set("session", result.session);
+  c.set("sessionId", result.session.id);
+  c.set("user", result.user);
   await next();
 }
