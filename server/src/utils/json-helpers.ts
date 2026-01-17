@@ -12,7 +12,20 @@ export function jsonContent<
     description,
   };
 }
-
+export function jsonContentWithHeader<
+  T extends z.ZodType,
+  U extends z.ZodType,
+>(schema: T, description: string, headers: U) {
+  return {
+    content: {
+      "application/json": {
+        schema,
+      },
+    },
+    description,
+    headers,
+  };
+}
 export function jsonContentRequired<
   T extends z.ZodType,
 >(schema: T, description: string) {

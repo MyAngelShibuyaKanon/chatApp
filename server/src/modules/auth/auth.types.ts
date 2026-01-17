@@ -4,6 +4,8 @@ export interface SessionWithToken extends Session {
 
 export interface Session {
   id: string;
+  userId: string;
   secretHash: Uint8Array; // Uint8Array is a byte array
   createdAt: Date;
+  lastVerifiedAt: Date;
 }

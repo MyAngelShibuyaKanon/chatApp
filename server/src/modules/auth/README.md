@@ -4,7 +4,8 @@
 
 - Session based Auth
 - Supports httponly cookies and bearer auth for multi platform support
-  
+- Sessions valid for 7 days
+
 ## Routes
 
 ### POST
@@ -17,3 +18,8 @@
 ### Get
 
 - /auth/me - sends user details
+
+## Implementation details
+
+- Follows lucia auth guide for creating sessions
+- Only stores id, username, password hash

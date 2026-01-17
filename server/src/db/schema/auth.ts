@@ -1,21 +1,23 @@
-import { customType, pgTable, timestamp, varchar } from "drizzle-orm/pg-core";
+import { bytea, pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 
-const bytearray = customType<{
-  data: Uint8Array;
-  default: false;
-}>({
-  dataType() {
-    return "bytea";
-  },
+export const users = pgTable("users", {
+  id: uuid("uuid").primaryKey().defaultRandom(),
+  username: varchar("username").unique().notNull(),
+  passwordHash: varchar("password_hash", {
+    length: 255,
+  }).notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt", { withTimezone: true }).defaultNow().notNull(),
 });
 
 export const sessions = pgTable("sessions", {
   id: varchar("id", { length: 32 }).primaryKey().unique(),
-  secretHash: bytearray("secret_hash").notNull(),
+  user_id: uuid("user_id").references(() => users.id).notNull(),
+  secretHash: bytea("secret_hash").notNull(),
   createdAt: timestamp("created_at", {
     withTimezone: true,
   }).notNull(),
-});
-
-export const users = pgTable("users", {
+  lastVerifiedAt: timestamp("last_verified_at", {
+    withTimezone: true,
+  }).notNull(),
 });
