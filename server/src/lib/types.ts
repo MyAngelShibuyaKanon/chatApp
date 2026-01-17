@@ -9,6 +9,9 @@ import { HttpStatusCode } from "@/utils/constants";
 export interface AppBindings {
   Variables: {
     logger: PinoLogger;
+    user: User;
+    session: Session;
+    sessionId: string;
   };
 }
 

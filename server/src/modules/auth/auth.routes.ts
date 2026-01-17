@@ -6,7 +6,7 @@ import createErrorSchema from "@/utils/create-error-schema";
 import createMessageObjectSchema from "@/utils/create-message-object-schema";
 import { jsonContent, jsonContentRequired, jsonContentWithHeader } from "@/utils/json-helpers";
 
-import { authResponseHeaders, sessionSelectSchema, userRegisterSchema, userSelectSchema } from "./auth.schema";
+import { authResponseHeaders, userRegisterSchema, userSelectSchema } from "./auth.schema";
 
 const tags = ["Authentication"];
 export const register = createRoute({
@@ -37,5 +37,19 @@ export const getMe = createRoute({
   },
 });
 
+export const login = createRoute({
+  path: "/login",
+  method: "post",
+  tags,
+  request: {
+    body: jsonContentRequired(userRegisterSchema, "The user to login"),
+  },
+  responses: {
+    [HttpStatusCode.OK]: jsonContent(userSelectSchema, "Returns the user when login is successful"),
+    [HttpStatusCode.UNPROCESSABLE_ENTITY]: jsonContent(createErrorSchema(userRegisterSchema), "Invalid inputs"),
+  },
+});
+
 export type RegisterRoute = typeof register;
+export type LoginRoute = typeof login;
 export type GetMeRoute = typeof getMe;

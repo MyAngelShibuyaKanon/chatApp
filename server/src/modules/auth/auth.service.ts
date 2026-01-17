@@ -1,4 +1,4 @@
-import { hash } from "argon2";
+import { hash, verify } from "argon2";
 import { error } from "node:console";
 
 import type { DbClient } from "@/db/db";
@@ -7,6 +7,8 @@ import { db } from "@/db/db";
 
 import type { Session, SessionWithToken } from "./auth.types";
 import type { AuthRepoFactory } from "./user.providers";
+
+import { userSelectSchema } from "./auth.schema";
 
 export class AuthService {
   private sessionExpiresInSeconds = 60 * 60 * 24 * 7; // 7 days
@@ -52,6 +54,26 @@ export class AuthService {
     });
 
     return result;
+  }
+
+  async verifyUserLogin(username: string, password: string) {
+    const authRepo = this.authRepoFactory(db);
+    const [user] = await authRepo.getUserFromUsername(username);
+    if (!user) {
+      return null;
+    }
+    const isPasswordValid = await verify(user.passwordHash, password);
+    if (!isPasswordValid) {
+      return null;
+    }
+
+    const session = await this.createSession(user.id);
+    if (!session) {
+      return null;
+    }
+
+    const token = session.token;
+    return { user, session, token };
   }
 
   async getUserFromId(userId: string) {
